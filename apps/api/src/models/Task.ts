@@ -27,7 +27,6 @@ Task.init(
         instruction: {
             type: DataTypes.STRING(1024),
             allowNull: false,
-            unique: true,
         },
         createdAt: {
             type: DataTypes.DATE,

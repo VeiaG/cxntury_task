@@ -1,22 +1,14 @@
 import { createRoot } from "react-dom/client";
 import "./style.css";
-import typescriptLogo from "/typescript.svg";
+import { SessionProvider } from "./components/session-provider";
+import { Header } from "./components/header";
+import { TaskList } from "./components/task-list";
 
 const App = () => (
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" className="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img
-        src={typescriptLogo}
-        className="logo vanilla"
-        alt="TypeScript logo"
-      />
-    </a>
-    <div className="card">
-    </div>
-  </div>
+  <SessionProvider>
+    <Header/>
+   <TaskList/>
+  </SessionProvider>
 );
 
 createRoot(document.getElementById("app")!).render(<App />);
