@@ -32,7 +32,7 @@ export const Task = ({answerTask, task}: {answerTask: (taskId: number, optionId:
                     const isCorrect = answerResult?.correct;
                     return (
                     <Button key={option.id} 
-                        variant={isAnswered ? (isCorrect ? "success" : "destructive") : "outline"}
+                        variant={isAnswered ? (isCorrect ? "default" : "destructive") : "outline"}
                     className="w-full text-left justify-start" onClick={() => handleAnswer(option.id)}>
                         {
                             isAnswered ? (isCorrect ? <Check/> : <X/>) : null
