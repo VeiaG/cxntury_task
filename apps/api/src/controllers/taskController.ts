@@ -77,7 +77,7 @@ export const submitAnswers = async (req: Request, res: Response): Promise<void> 
         await sequelize.transaction(async (t) => {
           const [answer, created] = await Answer.findOrCreate({
             where: { sessionId: session.id, taskId: task.id },
-            defaults: { optionId: option.id },
+            defaults: { optionId: option.id,taskId:option.taskId, sessionId: session.id },
             transaction: t
           });
 
