@@ -17,8 +17,8 @@ COPY apps/api/.sequelizerc ./.sequelizerc
 COPY apps/api/entrypoint.sh ./entrypoint.sh
 RUN chmod +x ./entrypoint.sh
 
-# Install dependencies (mysql2 + sequelize-cli for migrations)
-RUN npm install mysql2@^3.6.5 sequelize-cli@^6.6.5 dotenv@^16.3.1
+# Install dependencies (sequelize + mysql2 + sequelize-cli for migrations)
+RUN npm install sequelize@^6.35.2 mysql2@^3.6.5 sequelize-cli@^6.6.5 dotenv@^16.3.1
 
 # Set environment
 ENV NODE_ENV=production
