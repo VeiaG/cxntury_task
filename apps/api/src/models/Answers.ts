@@ -69,6 +69,13 @@ Answer.init(
         sequelize,
         tableName: "answers",
         timestamps: true,
+        indexes: [
+            {
+                unique: true,
+                fields: ['sessionId', 'taskId'],
+                name: 'unique_session_task_answer'
+            }
+        ]
     }
 );
 

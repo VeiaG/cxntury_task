@@ -43,6 +43,13 @@ jobs:
       - name: Build status
         run: echo "✅ All builds completed successfully"
 
+      # Prepare migration files for Docker image
+      - name: Prepare migration files
+        run: |
+          cp -r apps/api/src/migrations apps/api/dist/
+          cp apps/api/src/config/database.config.js apps/api/dist/
+          cp apps/api/.sequelizerc apps/api/dist/
+
       # Upload API dist for Docker build
       - name: Upload API build artifacts
         uses: actions/upload-artifact@v4

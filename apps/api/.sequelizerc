@@ -1,0 +1,18 @@
+const path = require('path');
+
+// Support both local dev and Docker environments
+const isDocker = process.env.NODE_ENV === 'production';
+
+module.exports = isDocker ? {
+  // Docker paths (migrations copied to root level)
+  'config': path.resolve('config', 'database.config.js'),
+  'migrations-path': path.resolve('migrations'),
+  'seeders-path': path.resolve('seeders'),
+  'models-path': path.resolve('dist', 'models')
+} : {
+  // Local development paths
+  'config': path.resolve('src', 'config', 'database.config.js'),
+  'migrations-path': path.resolve('src', 'migrations'),
+  'seeders-path': path.resolve('src', 'seeders'),
+  'models-path': path.resolve('src', 'models')
+};

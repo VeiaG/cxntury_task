@@ -30,11 +30,16 @@ const startServer = async () => {
     await sequelize.authenticate();
     console.log('✅ Database connection established successfully');
 
-    // Sync models (use { force: true } only in development to drop tables)
-    await sequelize.sync({ alter: true });
-    console.log('✅ Database models synchronized');
-
+    // Sync models only in development (use migrations in production)
+    if (process.env.NODE_ENV === 'development') {
+      await sequelize.sync({ alter: true });
+      console.log('✅ Database models synchronized (development mode)');
+    } else {
+      console.log('✅ Using database migrations (production mode)');
+      console.log('⚠️  Make sure to run migrations before starting the server: npm run migrate');
+    }
     await seedDatabase();
+
 
     app.listen(PORT, () => {
       console.log(`🚀 Server is running on http://localhost:${PORT}`);

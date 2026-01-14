@@ -1,6 +1,7 @@
 import { AnswerResponse, WorksheetResponse } from "@repo/shared-types";
 import { Request, Response } from "express";
 import { Session, Task, TaskOption, Answer } from "../models";
+import sequelize from "../config/database";
 
 export const getTasks = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -72,20 +73,20 @@ export const submitAnswers = async (req: Request, res: Response): Promise<void> 
           res.status(401).json({ error: "Invalid session token" });
           return;
         }
-        //Check for existing answer
-        const existingAnswer = await Answer.findOne({ where: { sessionId: session.id, taskId: task.id } });
-        if (existingAnswer) {
-          //Update existing answer
-          existingAnswer.optionId = option.id;
-          await existingAnswer.save();
-        } else {
-          //Create new answer
-          await Answer.create({
-            sessionId: session.id,
-            taskId: task.id,
-            optionId: option.id,
+        // Use transaction with findOrCreate for atomic create-or-update (prevents race conditions)
+        await sequelize.transaction(async (t) => {
+          const [answer, created] = await Answer.findOrCreate({
+            where: { sessionId: session.id, taskId: task.id },
+            defaults: { optionId: option.id },
+            transaction: t
           });
-        }
+
+          if (!created) {
+            answer.optionId = option.id;
+            await answer.save({ transaction: t });
+          }
+        });
+
         const isCorrectAnswer = option.isCorrect;
         
 

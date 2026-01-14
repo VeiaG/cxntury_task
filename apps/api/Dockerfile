@@ -6,8 +6,17 @@ WORKDIR /app
 # Copy pre-built bundle from Turbo build
 COPY apps/api/dist ./dist
 
-# Install mysql2 as external dependency
-RUN npm install mysql2@^3.6.5
+# Copy migrations and config (prepared by GitHub Actions)
+COPY apps/api/dist/migrations ./migrations
+COPY apps/api/dist/database.config.js ./config/database.config.js
+COPY apps/api/dist/.sequelizerc ./.sequelizerc
+
+# Copy entrypoint script
+COPY apps/api/entrypoint.sh ./entrypoint.sh
+RUN chmod +x ./entrypoint.sh
+
+# Install dependencies (mysql2 + sequelize-cli for migrations)
+RUN npm install mysql2@^3.6.5 sequelize-cli@^6.6.5 dotenv@^16.3.1
 
 # Set environment
 ENV NODE_ENV=production
@@ -15,5 +24,5 @@ ENV NODE_ENV=production
 # Expose port
 EXPOSE 3001
 
-# Start application
-CMD ["node", "dist/index.js"]
+# Run migrations then start application
+CMD ["./entrypoint.sh"]
