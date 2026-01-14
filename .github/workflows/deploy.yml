@@ -48,7 +48,6 @@ jobs:
         run: |
           cp -r apps/api/src/migrations apps/api/dist/
           cp apps/api/src/config/database.config.js apps/api/dist/
-          cp apps/api/.sequelizerc apps/api/dist/
 
       # Upload API dist for Docker build
       - name: Upload API build artifacts

@@ -9,7 +9,9 @@ COPY apps/api/dist ./dist
 # Copy migrations and config (prepared by GitHub Actions)
 COPY apps/api/dist/migrations ./migrations
 COPY apps/api/dist/database.config.js ./config/database.config.js
-COPY apps/api/dist/.sequelizerc ./.sequelizerc
+
+# Copy .sequelizerc directly from source (hidden files not in artifacts)
+COPY apps/api/.sequelizerc ./.sequelizerc
 
 # Copy entrypoint script
 COPY apps/api/entrypoint.sh ./entrypoint.sh
